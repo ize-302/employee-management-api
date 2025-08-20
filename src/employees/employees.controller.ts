@@ -25,6 +25,7 @@ import {
 import { EmployeeDto } from './dto/employee.dto';
 import { EmployeeQueryDto } from './dto/employee-query.dto';
 import { ResponseMessage } from '../shared/decorator/response-message.decorator';
+import { Employee } from './models/employee.model';
 
 @Controller('employees')
 export class EmployeesController {
@@ -68,7 +69,7 @@ export class EmployeesController {
   @ResponseMessage('Employee has been created')
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiCreatedResponse({ description: 'Employee created' })
-  async create(@Body() body: CreateEmployeeDto) {
+  async create(@Body() body: CreateEmployeeDto): Promise<Employee> {
     return this.employeesService.createEmployee(body);
   }
 

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Employee } from './entities/employee.entity';
+import { Employee } from './models/employee.model';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { PaginatedResponseDto } from '../pagination/dto/pagination.dto';
@@ -10,7 +10,7 @@ import { PaginationService } from '../pagination/pagination.service';
 export class EmployeesService {
   constructor(
     @InjectModel(Employee)
-    private employeeRepository: typeof Employee,
+    private employeeModel: typeof Employee,
     private readonly paginationService: PaginationService,
   ) {}
 
@@ -18,7 +18,7 @@ export class EmployeesService {
     page = 1,
     pageSize = 10,
   }): Promise<PaginatedResponseDto<Employee>> {
-    const data = await this.employeeRepository.findAll({
+    const data = await this.employeeModel.findAll({
       limit: pageSize,
       order: [['createdAt', 'DESC']],
       offset: this.paginationService.getOffsetValue({
@@ -27,7 +27,7 @@ export class EmployeesService {
       }),
     });
 
-    const totalItems = await this.employeeRepository.count();
+    const totalItems = await this.employeeModel.count();
     return {
       data,
       meta: this.paginationService.getMetaData({
@@ -40,7 +40,7 @@ export class EmployeesService {
   }
 
   async fetchEmployee(id: number): Promise<Employee> {
-    const findUser = await this.employeeRepository.findOne({ where: { id } });
+    const findUser = await this.employeeModel.findOne({ where: { id } });
     if (!findUser) {
       throw new NotFoundException('Employee not found');
     }
@@ -50,7 +50,7 @@ export class EmployeesService {
   async createEmployee(
     createEmployeeDto: CreateEmployeeDto,
   ): Promise<Employee> {
-    return await this.employeeRepository.create(createEmployeeDto as any);
+    return await this.employeeModel.create(createEmployeeDto as any);
   }
 
   async updateEmployee(payload: {
@@ -58,7 +58,7 @@ export class EmployeesService {
     payload: UpdateEmployeeDto;
   }): Promise<Employee> {
     await this.fetchEmployee(payload.id);
-    await this.employeeRepository.update(payload.payload, {
+    await this.employeeModel.update(payload.payload, {
       where: {
         id: payload.id,
       },
@@ -69,7 +69,7 @@ export class EmployeesService {
 
   async deleteEmployee(id: number): Promise<boolean> {
     await this.fetchEmployee(id);
-    const deletedEmployee = await this.employeeRepository.destroy({
+    const deletedEmployee = await this.employeeModel.destroy({
       where: { id },
     });
     if (deletedEmployee) {

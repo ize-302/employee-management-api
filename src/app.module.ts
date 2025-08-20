@@ -3,7 +3,7 @@ import { EmployeesModule } from './employees/employees.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Employee } from './employees/entities/employee.entity';
+import { Employee } from './employees/models/employee.model';
 
 @Module({
   imports: [
