@@ -12,6 +12,7 @@ import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import {
   ApiBadRequestResponse,
+  ApiCreatedResponse,
   ApiOperation,
   ApiParam,
   ApiQuery,
@@ -20,10 +21,10 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import {
   ApiOkWrappedPaginatedResponse,
   ApiOkWrappedResponse,
-} from 'src/shared/decorator/swagger-response.decorator';
+} from '../shared/decorator/swagger-response.decorator';
 import { EmployeeDto } from './dto/employee.dto';
 import { EmployeeQueryDto } from './dto/employee-query.dto';
-import { ResponseMessage } from 'src/shared/decorator/response-message.decorator';
+import { ResponseMessage } from '../shared/decorator/response-message.decorator';
 
 @Controller('employees')
 export class EmployeesController {
@@ -66,6 +67,7 @@ export class EmployeesController {
   @ApiOkWrappedResponse(EmployeeDto, 'Employee')
   @ResponseMessage('Employee has been created')
   @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiCreatedResponse({ description: 'Employee created' })
   async create(@Body() body: CreateEmployeeDto) {
     return this.employeesService.createEmployee(body);
   }

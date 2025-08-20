@@ -1,10 +1,23 @@
 import { Module } from '@nestjs/common';
 import { EmployeesModule } from './employees/employees.module';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { dataBaseConfig } from './database/database.config';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { Employee } from './employees/entities/employee.entity';
 
 @Module({
-  imports: [EmployeesModule, SequelizeModule.forRoot(dataBaseConfig)],
-  providers: [],
+  imports: [
+    SequelizeModule.forRoot({
+      dialect: 'sqlite',
+      storage: ':memory',
+      // storage: './database.sqlite',
+      models: [Employee],
+      autoLoadModels: true,
+      synchronize: true,
+    }),
+    EmployeesModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

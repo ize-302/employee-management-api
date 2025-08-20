@@ -3,7 +3,7 @@ import { EmployeesController } from './employees.controller';
 import { EmployeesService } from './employees.service';
 import { Employee } from './entities/employee.entity';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { PaginationService } from 'src/pagination/pagination.service';
+import { PaginationService } from '../pagination/pagination.service';
 
 @Module({
   imports: [SequelizeModule.forFeature([Employee])],

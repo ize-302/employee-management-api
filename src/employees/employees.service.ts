@@ -3,14 +3,14 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Employee } from './entities/employee.entity';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { PaginatedResponseDto } from 'src/pagination/dto/pagination.dto';
-import { PaginationService } from 'src/pagination/pagination.service';
+import { PaginatedResponseDto } from '../pagination/dto/pagination.dto';
+import { PaginationService } from '../pagination/pagination.service';
 
 @Injectable()
 export class EmployeesService {
   constructor(
     @InjectModel(Employee)
-    private readonly employeeRepository: typeof Employee,
+    private employeeRepository: typeof Employee,
     private readonly paginationService: PaginationService,
   ) {}
 
