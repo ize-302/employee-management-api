@@ -50,7 +50,7 @@ export class EmployeesService {
   async createEmployee(
     createEmployeeDto: CreateEmployeeDto,
   ): Promise<Employee> {
-    return await this.employeeModel.create(createEmployeeDto as any);
+    return await this.employeeModel.create(createEmployeeDto as Employee);
   }
 
   async updateEmployee(payload: {
